@@ -1,7 +1,9 @@
+import java.text.DecimalFormat;
 import java.util.Date;
 
 public class Main {
     public static void main(String[] args) {
+        // Se accede a la instancia del teatro. Si no existe, se crea.
         Teatro teatro = Teatro.getInstance("Teatro Colón");
 
         GrupoDeActores grupo1 = new GrupoDeActores();
@@ -37,7 +39,7 @@ public class Main {
         funcion4.setFecha(new Date(System.currentTimeMillis() + 86400000 * 2));
         funcion4.setPrecio(650);
 
-        Lugar platea = new Lugar("Platea", 100);
+        Lugar platea = new Lugar("Platea", 100.9);
         Lugar vip = new Lugar("VIP", 200);
         Lugar galeria = new Lugar("Galería", 50);
 
@@ -52,12 +54,12 @@ public class Main {
         paqueteCliente1.agregarEntrada(entrada1Cliente1);
         paqueteCliente1.agregarEntrada(entrada2Cliente1);
 
-        Venta ventaCliente1 = new Venta(cliente1, new Efectivo(10));
+        Venta ventaCliente1 = new Venta(cliente1, new Efectivo());
         ventaCliente1.agregarEntrada(entrada1Cliente1);
         ventaCliente1.agregarEntrada(paqueteCliente1);
         System.out.println("Cliente 1 - Precio final con Efectivo: " + ventaCliente1.calcularPrecioFinal());
 
-        ventaCliente1.cambiarMedioDePago(new TarjetaCredito(20)); // Recargo del 20
+        ventaCliente1.cambiarMedioDePago(new TarjetaCredito());
         System.out.println("Cliente 1 - Precio final con Tarjeta de Crédito: " + ventaCliente1.calcularPrecioFinal());
         ventaCliente1.confirmar();
 
@@ -77,7 +79,7 @@ public class Main {
         paqueteCliente3.agregarEntrada(entrada1Cliente3);
         paqueteCliente3.agregarEntrada(entrada2Cliente3);
 
-        Venta ventaCliente3 = new Venta(cliente3, new Efectivo(10));
+        Venta ventaCliente3 = new Venta(cliente3, new Efectivo());
         ventaCliente3.agregarEntrada(paqueteCliente3);
         System.out.println("Cliente 3 - Precio final con Efectivo: " + ventaCliente3.calcularPrecioFinal());
         ventaCliente3.confirmar();
@@ -86,7 +88,7 @@ public class Main {
         System.out.println("Cliente 2 - Compras realizadas: " + cliente2.getCompras().size());
         System.out.println("Cliente 3 - Compras realizadas: " + cliente3.getCompras().size());
 
-        Venta nuevaVentaCliente3 = new Venta(cliente3, new Efectivo(10));
+        Venta nuevaVentaCliente3 = new Venta(cliente3, new Efectivo());
         nuevaVentaCliente3.agregarEntrada(entrada1Cliente3);
         nuevaVentaCliente3.confirmar();
         System.out.println("Cliente 3 - Nueva Compra Precio final con Efectivo: " + nuevaVentaCliente3.calcularPrecioFinal());

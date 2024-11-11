@@ -1,11 +1,8 @@
 public class Efectivo extends MedioDePago {
-    private double descuento = 0;
+    private static double descuento = 10;
 
-    Efectivo(double descuento) {
-        this.descuento = descuento;
-    }
     @Override
     public double calcularPrecio(double total) {
-        return total * (1 - this.descuento / 100);
+        return total * (1 - Efectivo.descuento / 100);
     }
 }

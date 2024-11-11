@@ -25,8 +25,13 @@ public class Funcion {
         return precio;
     }
 
-    public void setPrecio(double precio) {
-        this.precio = precio;
+    private double calcularRecargoPorDuracion() {
+        // Es un recargo por el uso del teatro. A mayor duración, mayor recargo.
+    	return this.obra.getDuracion() * 0.05;
+    }
+    
+    public void setPrecio(double precioBase) {
+        this.precio = precioBase + this.calcularRecargoPorDuracion();
     }
 
     public Obra getObra() {

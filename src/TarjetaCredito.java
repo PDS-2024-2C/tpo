@@ -1,10 +1,12 @@
 public class TarjetaCredito extends Tarjeta {
-    public TarjetaCredito(double recargo) {
-        super(recargo);
+    protected static double recargo = 20.0;
+
+    public TarjetaCredito() {
+        super(TarjetaCredito.recargo);
     }
 
     @Override
     public double calcularPrecio(double total) {
-        return total * (1 + recargo / 100);
+        return total * (1 + TarjetaCredito.recargo / 100);
     }
 }
