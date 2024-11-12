@@ -1,6 +1,9 @@
+import java.text.DecimalFormat;
+
 public class EntradaSimple extends Entrada {
     private Funcion funcion;
     private Lugar lugar;
+    private static DecimalFormat df = new DecimalFormat("#.00");
 
     public EntradaSimple(Funcion funcion, Lugar lugar) {
         this.funcion = funcion;
@@ -23,6 +26,6 @@ public class EntradaSimple extends Entrada {
     public void detalleEntrada() {
         System.out.println("    Funcion: " + funcion.getObra().getNombre() +
                 ", Lugar: " + lugar.getUbicacion() +
-                ", Precio: " + total());
+                ", Precio: " + EntradaSimple.df.format(total()));
     }
 }

@@ -1,22 +1,24 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.text.DecimalFormat;
 
 public class Venta {
     private List<Entrada> entradas = new ArrayList<Entrada>();
     private Cliente cliente;
     private MedioDePago medioPago;
+    private static DecimalFormat df = new DecimalFormat("#.00");
 
     public Venta(Cliente cliente, MedioDePago medioPago) {
         this.cliente = cliente;
         this.medioPago = medioPago;
     }
 
-    public double calcularPrecioFinal() {
+    public String calcularPrecioFinal() {
         double total = 0;
         for (Entrada entrada : entradas) {
             total += entrada.total();
         }
-        return medioPago.calcularPrecio(total);
+        return Venta.df.format(medioPago.calcularPrecio(total));
     }
 
     public void cambiarMedioDePago(MedioDePago nuevoMedio) {
