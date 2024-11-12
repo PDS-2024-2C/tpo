@@ -25,7 +25,7 @@ public class EntradaSimple extends Entrada {
     @Override
     public void detalleEntrada() {
         System.out.println("    Funcion: " + funcion.getObra().getNombre() +
-                ", Lugar: " + lugar.getUbicacion() +
+                ", Lugar: " + lugar.getNombre() +
                 ", Precio: " + EntradaSimple.df.format(total()));
     }
 }

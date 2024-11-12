@@ -39,16 +39,16 @@ public class Main {
         funcion4.setFecha(new Date(System.currentTimeMillis() + 86400000 * 2));
         funcion4.setPrecio(650);
 
-        Lugar platea = new Lugar("Platea", 100.9);
-        Lugar vip = new Lugar("VIP", 200);
-        Lugar galeria = new Lugar("Galería", 50);
+        Lugar platea = new Platea();
+        Lugar paraiso = new Paraiso();
+        Lugar tertulia = new Tertulia();
 
         Cliente cliente1 = new Cliente("Carlos", "López");
         Cliente cliente2 = new Cliente("Mariana", "Rojas");
         Cliente cliente3 = new Cliente("Diego", "Fernandez");
 
-        EntradaSimple entrada1Cliente1 = new EntradaSimple(funcion1, platea);
-        EntradaSimple entrada2Cliente1 = new EntradaSimple(funcion2, vip);
+        EntradaSimple entrada1Cliente1 = new EntradaSimple(funcion1, new Platea());
+        EntradaSimple entrada2Cliente1 = new EntradaSimple(funcion2, new Paraiso());
 
         PaqueteEntrada paqueteCliente1 = new PaqueteEntrada();
         paqueteCliente1.agregarEntrada(entrada1Cliente1);
@@ -59,12 +59,12 @@ public class Main {
         ventaCliente1.agregarEntrada(paqueteCliente1);
         System.out.println("Cliente 1 - Precio final con Efectivo: " + ventaCliente1.calcularPrecioFinal());
 
-        ventaCliente1.cambiarMedioDePago(new TarjetaCredito());
+        ventaCliente1.cambiarMedioDePago(new TarjetaCredito(3));
         System.out.println("Cliente 1 - Precio final con Tarjeta de Crédito: " + ventaCliente1.calcularPrecioFinal());
         ventaCliente1.confirmar();
 
-        EntradaSimple entrada1Cliente2 = new EntradaSimple(funcion3, galeria);
-        EntradaSimple entrada2Cliente2 = new EntradaSimple(funcion4, vip);
+        EntradaSimple entrada1Cliente2 = new EntradaSimple(funcion3, new Tertulia());
+        EntradaSimple entrada2Cliente2 = new EntradaSimple(funcion4, new Cazuela());
 
         Venta ventaCliente2 = new Venta(cliente2, new TarjetaDebito());
         ventaCliente2.agregarEntrada(entrada1Cliente2);
@@ -72,8 +72,8 @@ public class Main {
         System.out.println("Cliente 2 - Precio final con Tarjeta de Débito: " + ventaCliente2.calcularPrecioFinal());
         ventaCliente2.confirmar();
 
-        EntradaSimple entrada1Cliente3 = new EntradaSimple(funcion1, galeria);
-        EntradaSimple entrada2Cliente3 = new EntradaSimple(funcion2, platea);
+        EntradaSimple entrada1Cliente3 = new EntradaSimple(funcion1, new PalcoAlto());
+        EntradaSimple entrada2Cliente3 = new EntradaSimple(funcion2, new PalcoBajo());
 
         PaqueteEntrada paqueteCliente3 = new PaqueteEntrada();
         paqueteCliente3.agregarEntrada(entrada1Cliente3);

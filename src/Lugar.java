@@ -1,25 +1,6 @@
-public class Lugar {
-    private String ubicacion;
+public abstract class Lugar {
     private double costoAdicional;
-
-    public Lugar(String ubicacion, double costoAdicional) {
-        this.ubicacion = ubicacion;
-        this.costoAdicional = costoAdicional;
-    }
-
-    public String getUbicacion() {
-        return ubicacion;
-    }
-
-    public void setUbicacion(String ubicacion) {
-        this.ubicacion = ubicacion;
-    }
-
-    public double getCostoAdicional() {
-        return costoAdicional;
-    }
-
-    public void setCostoAdicional(double costoAdicional) {
-        this.costoAdicional = costoAdicional;
-    }
+    private String nombre;
+    public abstract double getCostoAdicional();
+    public abstract String getNombre();
 }
