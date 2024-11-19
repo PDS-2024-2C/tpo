@@ -3,10 +3,12 @@ import java.util.List;
 
 public class Teatro {
     private String nombre;
-    private List<Funcion> funciones;
-    private List<Obra> obras;
+    private ArrayList<Funcion> funciones;
+    private ArrayList<Obra> obras;
 
     private static Teatro instance;
+
+
 
     private Teatro(String nombre) {
         this.nombre = nombre;
@@ -38,11 +40,20 @@ public class Teatro {
         return nombre;
     }
 
-    public List<Funcion> getFunciones() {
+    public ArrayList<Funcion> getFunciones() {
         return funciones;
     }
 
-    public List<Obra> getObras() {
+    public ArrayList<Obra> getObras() {
         return obras;
     }
+
+    public ArrayList<Funcion> obtenerFuncionesDeObra(Obra obra) {         
+        ArrayList<Funcion> funcionesDeObra = new ArrayList<>();         
+        for (Funcion funcion : funciones) 
+        {             
+            if (funcion.getObra().getNombre().equalsIgnoreCase(obra.getNombre())) { 
+                funcionesDeObra.add(funcion); } } 
+            return funcionesDeObra; 
+        }
 }

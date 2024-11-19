@@ -1,9 +1,12 @@
-import java.text.DecimalFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-        // Se accede a la instancia del teatro. Si no existe, se crea.
+        Scanner scanner = new Scanner(System.in);
+
         Teatro teatro = Teatro.getInstance("Teatro Colón");
 
         GrupoDeActores grupo1 = new GrupoDeActores();
@@ -14,6 +17,7 @@ public class Main {
         grupo2.agregarActor(new Actor("Luis Martinez"));
         grupo2.agregarActor(new Actor("Maria Sanchez"));
         grupo2.agregarActor(new Actor("Jose Perez"));
+
 
         Obra obra1 = teatro.cargarObra("Hamlet");
         obra1.asignarGrupo(grupo1);
@@ -38,73 +42,153 @@ public class Main {
         Funcion funcion4 = teatro.cargarFuncion(obra2);
         funcion4.setFecha(new Date(System.currentTimeMillis() + 86400000 * 2));
         funcion4.setPrecio(650);
+        
 
-        Lugar platea = new Platea();
-        Lugar paraiso = new Paraiso();
-        Lugar tertulia = new Tertulia();
+        Cliente cliente = null;
+        ArrayList<Cliente> clientes = new ArrayList<>();
+        clientes.add(new Cliente("tomas", "tomas@gmail.com"));
+        clientes.add(new Cliente("federico", "federicomartos@gmail.com"));
+        
+        System.out.println("Bienvenido! \n ingrese 1 para registrarse / ingrese 2 para logearse )");
+        if (scanner.nextInt() == 1) {
+            System.out.println("Ingrese su nombre: ");
+            String nombre = scanner.next();
+            System.out.println("Ingrese su email: ");
+            String email = scanner.next();
+            cliente = new Cliente(nombre, email); 
+            clientes.add(cliente);
+            System.out.println();
 
-        Cliente cliente1 = new Cliente("Carlos", "López");
-        Cliente cliente2 = new Cliente("Mariana", "Rojas");
-        Cliente cliente3 = new Cliente("Diego", "Fernandez");
-
-        EntradaSimple entrada1Cliente1 = new EntradaSimple(funcion1, new Platea());
-        EntradaSimple entrada2Cliente1 = new EntradaSimple(funcion2, new Paraiso());
-
-        PaqueteEntrada paqueteCliente1 = new PaqueteEntrada();
-        paqueteCliente1.agregarEntrada(entrada1Cliente1);
-        paqueteCliente1.agregarEntrada(entrada2Cliente1);
-
-        Venta ventaCliente1 = new Venta(cliente1, new Efectivo());
-        ventaCliente1.agregarEntrada(entrada1Cliente1);
-        ventaCliente1.agregarEntrada(paqueteCliente1);
-        System.out.println("Cliente 1 - Precio final con Efectivo: " + ventaCliente1.calcularPrecioFinal());
-
-        ventaCliente1.cambiarMedioDePago(new TarjetaCredito(3));
-        System.out.println("Cliente 1 - Precio final con Tarjeta de Crédito: " + ventaCliente1.calcularPrecioFinal());
-        ventaCliente1.confirmar();
-
-        EntradaSimple entrada1Cliente2 = new EntradaSimple(funcion3, new Tertulia());
-        EntradaSimple entrada2Cliente2 = new EntradaSimple(funcion4, new Cazuela());
-
-        Venta ventaCliente2 = new Venta(cliente2, new TarjetaDebito());
-        ventaCliente2.agregarEntrada(entrada1Cliente2);
-        ventaCliente2.agregarEntrada(entrada2Cliente2);
-        System.out.println("Cliente 2 - Precio final con Tarjeta de Débito: " + ventaCliente2.calcularPrecioFinal());
-        ventaCliente2.confirmar();
-
-        EntradaSimple entrada1Cliente3 = new EntradaSimple(funcion1, new PalcoAlto());
-        EntradaSimple entrada2Cliente3 = new EntradaSimple(funcion2, new PalcoBajo());
-
-        PaqueteEntrada paqueteCliente3 = new PaqueteEntrada();
-        paqueteCliente3.agregarEntrada(entrada1Cliente3);
-        paqueteCliente3.agregarEntrada(entrada2Cliente3);
-
-        Venta ventaCliente3 = new Venta(cliente3, new Efectivo());
-        ventaCliente3.agregarEntrada(paqueteCliente3);
-        System.out.println("Cliente 3 - Precio final con Efectivo: " + ventaCliente3.calcularPrecioFinal());
-        ventaCliente3.confirmar();
-
-        System.out.println("Cliente 1 - Compras realizadas: " + cliente1.getCompras().size());
-        System.out.println("Cliente 2 - Compras realizadas: " + cliente2.getCompras().size());
-        System.out.println("Cliente 3 - Compras realizadas: " + cliente3.getCompras().size());
-
-        Venta nuevaVentaCliente3 = new Venta(cliente3, new Efectivo());
-        nuevaVentaCliente3.agregarEntrada(entrada1Cliente3);
-        nuevaVentaCliente3.confirmar();
-        System.out.println("Cliente 3 - Nueva Compra Precio final con Efectivo: " + nuevaVentaCliente3.calcularPrecioFinal());
-        System.out.println("Cliente 3 - Compras realizadas: " + cliente3.getCompras().size());
+        }
+        else {
+            System.out.println("Ingrese su email: ");
+            String email = scanner.next();
+            for (Cliente clienteAux : clientes) {     
+                if (clienteAux.getEmail().equalsIgnoreCase(email)) 
+                    cliente = clienteAux;
+                }
+        }
 
 
-        System.out.println("Detalles de compras realizadas:");
-        printEntradasCompradasPorCliente(cliente1);
-        printEntradasCompradasPorCliente(cliente2);
-        printEntradasCompradasPorCliente(cliente3);
+        if (cliente != null) {
+            
+       
+
+        System.out.println("Obras disponibles: ");
+
+        ArrayList<Obra> obras = teatro.getObras();   
+        for(int i = 0; i < obras.size(); i++) {
+            Obra obra = obras.get(i);
+            System.out.println(i + ". " + obra.getNombre());
+        }
+
+        int inputObra  = scanner.nextInt();
+
+
+        ArrayList<Funcion> funcionesObra = null;
+
+
+        int inputFuncion = 0;
+        if (obras.get(inputObra) != null) {
+            funcionesObra = teatro.obtenerFuncionesDeObra(obras.get(inputObra));
+
+            for(int i = 0; i < funcionesObra.size(); i++) {
+                Funcion funcion = funcionesObra.get(i);
+                System.out.println(i + ". " + funcion.getFecha() + "--- " + " $" + funcion.getPrecio());
+            }
+    
+            inputFuncion = scanner.nextInt();
+
+        }
+
+
+
+        if (funcionesObra == null) {
+            System.out.println("no hay funciones disponibles");
+            scanner.close();
+            return;
+        }
+
+        PaqueteEntrada entradas = new PaqueteEntrada();
+        
+        System.out.println("Ingrese la cantidad de entradas que comprará este cliente:");
+        int cantidadEntradas = scanner.nextInt();
+
+
+            for (int j = 1; j <= cantidadEntradas; j++) {
+            
+                System.out.println("Seleccione el tipo de lugar para la entrada " + j + ":");
+                System.out.println("1: Platea");
+                System.out.println("2: Palco Alto");
+                System.out.println("3: Palco Bajo");
+                System.out.println("4: Cazuela");
+                System.out.println("5: Tertulia");
+                System.out.println("6: Paraíso");
+                
+                int tipoLugar = scanner.nextInt();
+                Lugar lugar;
+                switch (tipoLugar) {
+                    case 1 -> lugar = new Platea();
+                    case 2 -> lugar = new PalcoAlto();
+                    case 3 -> lugar = new PalcoBajo();
+                    case 4 -> lugar = new Cazuela();
+                    case 5 -> lugar = new Tertulia();
+                    case 6 -> lugar = new Paraiso();
+                    default -> {
+                        System.out.println("Opción de lugar no válida, se asignará Platea por defecto.");
+                        lugar = new Platea();
+                    }
+                }
+
+
+                EntradaSimple entrada = new EntradaSimple(funcionesObra.get(inputFuncion), lugar);
+
+                entradas.agregarEntrada(entrada);
+            }
+
+            System.out.println("Ingrese el medio de pago (1: Efectivo, 2: Tarjeta Crédito, 3: Tarjeta Débito):");
+            int opcionPago = scanner.nextInt();
+            MedioDePago medioDePago;
+            if (opcionPago == 1) {
+                medioDePago = new Efectivo();
+            } else if (opcionPago == 2) {
+                System.out.println("Ingrese la cantidad de cuotas para la Tarjeta de Crédito (2-3-6):");
+                int cuotas = scanner.nextInt();
+                medioDePago = new TarjetaCredito(cuotas);
+            } else {
+                medioDePago = new TarjetaDebito();
+            }
+
+            
+            Venta venta = new Venta(cliente, medioDePago);
+            venta.agregarEntrada(entradas);
+
+            
+
+            System.out.println("Precio final con " + medioDePago.getClass().getSimpleName() + ": " + venta.calcularPrecioFinal());
+            venta.confirmar();
+            printEntradasCompradasPorCliente(cliente, entradas.getCantidadEntradas());
+            scanner.close();
+        }
+
     }
-    private static void printEntradasCompradasPorCliente(Cliente cliente) {
-        System.out.println("Entradas compradas por " + cliente.getNombre() + " " + cliente.getApellido() + ":");
-        cliente.getCompras().forEach(venta -> {
+
+    
+    
+
+    private static void printEntradasCompradasPorCliente(Cliente cliente, int cantidadEntradas) {
+        System.out.println("Entradas compradas por " + cliente.getNombre() + " " + cliente.getEmail() + ":");
+
+        for(Venta venta:cliente.getCompras()) {
             System.out.println("  Venta con " + venta.getMedioPago().getClass().getSimpleName());
-            venta.getEntradas().forEach(Entrada::detalleEntrada);
-        });
+            System.out.println("Cantidad de entradas adquiridas: " + cantidadEntradas);
+
+        }
+
+
+           
+    
     }
 }
+
+

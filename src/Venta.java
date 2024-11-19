@@ -3,7 +3,7 @@ import java.util.List;
 import java.text.DecimalFormat;
 
 public class Venta {
-    private List<Entrada> entradas = new ArrayList<Entrada>();
+    private PaqueteEntrada entradas = new PaqueteEntrada();
     private Cliente cliente;
     private MedioDePago medioPago;
     private static DecimalFormat df = new DecimalFormat("#.00");
@@ -15,7 +15,7 @@ public class Venta {
 
     public String calcularPrecioFinal() {
         double total = 0;
-        for (Entrada entrada : entradas) {
+        for (Entrada entrada : entradas.getEntradas()) {
             total += entrada.total();
         }
         return Venta.df.format(medioPago.calcularPrecio(total));
@@ -30,11 +30,15 @@ public class Venta {
     }
 
     public List<Entrada> getEntradas() {
-        return entradas;
+        return entradas.getEntradas();
+    }
+
+    public int getCantidadEntradas() {
+        return entradas.getCantidadEntradas();
     }
 
     public void agregarEntrada(Entrada nuevaEntrada) {
-        entradas.add(nuevaEntrada);
+        entradas.agregarEntrada(nuevaEntrada);
     }
 
     public Cliente getCliente() {
