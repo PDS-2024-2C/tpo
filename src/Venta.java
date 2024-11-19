@@ -26,6 +26,7 @@ public class Venta {
     }
 
     public void confirmar() {
+        entradas.forEach(Entrada::confirmarLugar);
         cliente.efectuarPago(this);
     }
 
