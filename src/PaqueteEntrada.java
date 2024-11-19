@@ -21,6 +21,10 @@ public class PaqueteEntrada extends Entrada {
         return total;
     }
 
+    public int getCantidadEntradas() {
+        return entradas.size();
+    }
+
     public List<Entrada> getEntradas() {
         return entradas;
     }

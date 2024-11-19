@@ -3,12 +3,12 @@ import java.util.List;
 
 public class Cliente {
     private String nombre;
-    private String apellido;
+    private String email;
     private List<Venta> compras = new ArrayList<Venta>();
 
-    public Cliente(String nombre, String apellido) {
+    public Cliente(String nombre, String email) {
         this.nombre = nombre;
-        this.apellido = apellido;
+        this.email = email;
     }
 
     public void efectuarPago(Venta venta) {
@@ -27,12 +27,12 @@ public class Cliente {
         this.nombre = nombre;
     }
 
-    public String getApellido() {
-        return apellido;
+    public String getEmail() {
+        return email;
     }
 
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public List<Venta> getCompras() {

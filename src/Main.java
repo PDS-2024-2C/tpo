@@ -1,4 +1,5 @@
 import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -16,6 +17,7 @@ public class Main {
         grupo2.agregarActor(new Actor("Luis Martinez"));
         grupo2.agregarActor(new Actor("Maria Sanchez"));
         grupo2.agregarActor(new Actor("Jose Perez"));
+
 
         Obra obra1 = teatro.cargarObra("Hamlet");
         obra1.asignarGrupo(grupo1);
@@ -42,43 +44,79 @@ public class Main {
         funcion4.setPrecio(650);
         
 
+        Cliente cliente = null;
         ArrayList<Cliente> clientes = new ArrayList<>();
-        for (int i = 1; i <= 3; i++) {
-            System.out.println("Bienvenido nuevo cliente! Ingrese su nombre:");
-            String nombre = scanner.nextLine();
-            System.out.println("Ingrese su apellido:");
-            String apellido = scanner.nextLine();
-            clientes.add(new Cliente(nombre, apellido));
+        clientes.add(new Cliente("tomas", "tomas@gmail.com"));
+        clientes.add(new Cliente("federico", "federicomartos@gmail.com"));
+        
+        System.out.println("Bienvenido! \n ingrese 1 para registrarse / ingrese 2 para logearse )");
+        if (scanner.nextInt() == 1) {
+            System.out.println("Ingrese su nombre: ");
+            String nombre = scanner.next();
+            System.out.println("Ingrese su email: ");
+            String email = scanner.next();
+            cliente = new Cliente(nombre, email); 
+            clientes.add(cliente);
             System.out.println();
+
+        }
+        else {
+            System.out.println("Ingrese su email: ");
+            String email = scanner.next();
+            for (Cliente clienteAux : clientes) {     
+                if (clienteAux.getEmail().equalsIgnoreCase(email)) 
+                    cliente = clienteAux;
+                }
         }
 
 
-        for (int i = 0; i < clientes.size(); i++) {
-            Cliente cliente = clientes.get(i);
-            System.out.println("Para el cliente " + cliente.getNombre() + " " + cliente.getApellido() + ":");
+        if (cliente != null) {
+            
+       
 
-            System.out.println("Ingrese el medio de pago (1: Efectivo, 2: Tarjeta Crédito, 3: Tarjeta Débito):");
-            int opcionPago = Integer.parseInt(scanner.nextLine());
-            MedioDePago medioDePago;
-            if (opcionPago == 1) {
-                medioDePago = new Efectivo();
-            } else if (opcionPago == 2) {
-                System.out.println("Ingrese la cantidad de cuotas para la Tarjeta de Crédito:");
-                int cuotas = Integer.parseInt(scanner.nextLine());
-                medioDePago = new TarjetaCredito(cuotas);
-            } else {
-                medioDePago = new TarjetaDebito();
+        System.out.println("Obras disponibles: ");
+
+        ArrayList<Obra> obras = teatro.getObras();   
+        for(int i = 0; i < obras.size(); i++) {
+            Obra obra = obras.get(i);
+            System.out.println(i + ". " + obra.getNombre());
+        }
+
+        int inputObra  = scanner.nextInt();
+
+
+        ArrayList<Funcion> funcionesObra = null;
+
+
+        int inputFuncion = 0;
+        if (obras.get(inputObra) != null) {
+            funcionesObra = teatro.obtenerFuncionesDeObra(obras.get(inputObra));
+
+            for(int i = 0; i < funcionesObra.size(); i++) {
+                Funcion funcion = funcionesObra.get(i);
+                System.out.println(i + ". " + funcion.getFecha() + "--- " + " $" + funcion.getPrecio());
             }
+    
+            inputFuncion = scanner.nextInt();
 
-            Venta venta = new Venta(cliente, medioDePago);
+        }
 
 
-            System.out.println("Ingrese la cantidad de entradas que comprará este cliente:");
-            int cantidadEntradas = Integer.parseInt(scanner.nextLine());
+
+        if (funcionesObra == null) {
+            System.out.println("no hay funciones disponibles");
+            scanner.close();
+            return;
+        }
+
+        PaqueteEntrada entradas = new PaqueteEntrada();
+        
+        System.out.println("Ingrese la cantidad de entradas que comprará este cliente:");
+        int cantidadEntradas = scanner.nextInt();
+
+
             for (int j = 1; j <= cantidadEntradas; j++) {
-                System.out.println("Seleccione la función para la entrada " + j + " (1 - " + teatro.getFunciones().size() + "):");
-                int funcionSeleccionada = Integer.parseInt(scanner.nextLine()) - 1;
-
+            
                 System.out.println("Seleccione el tipo de lugar para la entrada " + j + ":");
                 System.out.println("1: Platea");
                 System.out.println("2: Palco Alto");
@@ -87,7 +125,7 @@ public class Main {
                 System.out.println("5: Tertulia");
                 System.out.println("6: Paraíso");
                 
-                int tipoLugar = Integer.parseInt(scanner.nextLine());
+                int tipoLugar = scanner.nextInt();
                 Lugar lugar;
                 switch (tipoLugar) {
                     case 1 -> lugar = new Platea();
@@ -102,25 +140,55 @@ public class Main {
                     }
                 }
 
-                EntradaSimple entrada = new EntradaSimple(teatro.getFunciones().get(funcionSeleccionada), lugar);
-                venta.agregarEntrada(entrada);
+
+                EntradaSimple entrada = new EntradaSimple(funcionesObra.get(inputFuncion), lugar);
+
+                entradas.agregarEntrada(entrada);
             }
 
-            System.out.println("Cliente " + (i + 1) + " - Precio final con " + medioDePago.getClass().getSimpleName() + ": " + venta.calcularPrecioFinal());
+            System.out.println("Ingrese el medio de pago (1: Efectivo, 2: Tarjeta Crédito, 3: Tarjeta Débito):");
+            int opcionPago = scanner.nextInt();
+            MedioDePago medioDePago;
+            if (opcionPago == 1) {
+                medioDePago = new Efectivo();
+            } else if (opcionPago == 2) {
+                System.out.println("Ingrese la cantidad de cuotas para la Tarjeta de Crédito (2-3-6):");
+                int cuotas = scanner.nextInt();
+                medioDePago = new TarjetaCredito(cuotas);
+            } else {
+                medioDePago = new TarjetaDebito();
+            }
+
+            
+            Venta venta = new Venta(cliente, medioDePago);
+            venta.agregarEntrada(entradas);
+
+            
+
+            System.out.println("Precio final con " + medioDePago.getClass().getSimpleName() + ": " + venta.calcularPrecioFinal());
             venta.confirmar();
+            printEntradasCompradasPorCliente(cliente, entradas.getCantidadEntradas());
+            scanner.close();
         }
 
-        System.out.println("Detalles de compras realizadas:");
-        clientes.forEach(Main::printEntradasCompradasPorCliente);
-
-        scanner.close();
     }
 
-    private static void printEntradasCompradasPorCliente(Cliente cliente) {
-        System.out.println("Entradas compradas por " + cliente.getNombre() + " " + cliente.getApellido() + ":");
-        cliente.getCompras().forEach(venta -> {
+    
+    
+
+    private static void printEntradasCompradasPorCliente(Cliente cliente, int cantidadEntradas) {
+        System.out.println("Entradas compradas por " + cliente.getNombre() + " " + cliente.getEmail() + ":");
+
+        for(Venta venta:cliente.getCompras()) {
             System.out.println("  Venta con " + venta.getMedioPago().getClass().getSimpleName());
-            venta.getEntradas().forEach(Entrada::detalleEntrada);
-        });
+            System.out.println("Cantidad de entradas adquiridas: " + cantidadEntradas);
+
+        }
+
+
+           
+    
     }
 }
+
+
