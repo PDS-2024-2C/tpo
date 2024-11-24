@@ -128,17 +128,18 @@ public class Main {
                 int tipoLugar = scanner.nextInt();
                 Lugar lugar;
                 switch (tipoLugar) {
-                    case 1 -> lugar = new Platea();
-                    case 2 -> lugar = new PalcoAlto();
-                    case 3 -> lugar = new PalcoBajo();
-                    case 4 -> lugar = new Cazuela();
-                    case 5 -> lugar = new Tertulia();
-                    case 6 -> lugar = new Paraiso();
+                    case 1 -> lugar = new Platea(1);
+                    case 2 -> lugar = new PalcoAlto(10);
+                    case 3 -> lugar = new PalcoBajo(10);
+                    case 4 -> lugar = new Cazuela(10);
+                    case 5 -> lugar = new Tertulia(10);
+                    case 6 -> lugar = new Paraiso(10);
                     default -> {
                         System.out.println("Opción de lugar no válida, se asignará Platea por defecto.");
-                        lugar = new Platea();
+                        lugar = new Platea(10);
                     }
                 }
+                System.out.println(lugar.getLugaresDisponibles());
 
 
                 EntradaSimple entrada = new EntradaSimple(funcionesObra.get(inputFuncion), lugar);

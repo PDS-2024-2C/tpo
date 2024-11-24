@@ -34,4 +34,9 @@ public class PaqueteEntrada extends Entrada {
         System.out.println("    Paquete de Entradas:");
         entradas.forEach(Entrada::detalleEntrada);
     }
+
+    @Override
+    public void confirmarLugar() {
+        entradas.forEach(Entrada::confirmarLugar);
+    }
 }

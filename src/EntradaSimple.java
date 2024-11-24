@@ -28,4 +28,8 @@ public class EntradaSimple extends Entrada {
                 ", Lugar: " + lugar.getNombre() +
                 ", Precio: " + EntradaSimple.df.format(total()));
     }
+
+    public void confirmarLugar() {
+        lugar.usarLugar();
+    }
 }
