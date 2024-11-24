@@ -1,9 +1,11 @@
 import java.util.Date;
+import java.util.HashMap;
 
 public class Funcion {
     private Date fecha;
     private double precio;
     private Obra obra;
+    private HashMap<Lugar, Integer> lugaresDisponibles = new HashMap<>();
 
     public Funcion() {}
 
@@ -40,5 +42,22 @@ public class Funcion {
 
     public void setObra(Obra obra) {
         this.obra = obra;
+    }
+
+    public void agregarLugar(Lugar lugar, int cantidad) {
+        lugaresDisponibles.put(lugar, cantidad);
+    }
+
+    public HashMap<Lugar, Integer> getLugaresDisponibles() {
+        return lugaresDisponibles;
+    }
+
+    public boolean ocuparLugar(Lugar lugar) {
+        int disponibles = lugaresDisponibles.getOrDefault(lugar, 0);
+        if (disponibles > 0) {
+            lugaresDisponibles.put(lugar, disponibles - 1);
+            return true;
+        }
+        return false;
     }
 }

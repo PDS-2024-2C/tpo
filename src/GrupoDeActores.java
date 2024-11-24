@@ -15,4 +15,12 @@ public class GrupoDeActores {
     public List<Actor> getIntegrantes() {
         return integrantes;
     }
+
+    public String getResumenActores() {
+        StringBuilder resumen = new StringBuilder();
+        for (Actor actor : integrantes) {
+            resumen.append(actor.getNombre()).append(", ");
+        }
+        return resumen.length() > 2 ? resumen.substring(0, resumen.length() - 2) : "Sin actores";
+    }
 }

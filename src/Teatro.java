@@ -5,6 +5,8 @@ public class Teatro {
     private String nombre;
     private ArrayList<Funcion> funciones;
     private ArrayList<Obra> obras;
+    private ArrayList<Lugar> lugares = new ArrayList<>(); // Almacena los lugares globales
+    private ArrayList<GrupoDeActores> gruposDeActores = new ArrayList<>();
 
     private static Teatro instance;
 
@@ -36,6 +38,10 @@ public class Teatro {
         return obra;
     }
 
+    public void addLugar(Lugar lugar) { lugares.add(lugar); }
+
+    public ArrayList<Lugar> getLugares() { return lugares; }
+
     public String getNombre() {
         return nombre;
     }
@@ -56,4 +62,12 @@ public class Teatro {
                 funcionesDeObra.add(funcion); } } 
             return funcionesDeObra; 
         }
+
+    public void addGrupoDeActores(GrupoDeActores grupo) {
+        gruposDeActores.add(grupo);
+    }
+
+    public ArrayList<GrupoDeActores> getGruposDeActores() {
+        return gruposDeActores;
+    }
 }
