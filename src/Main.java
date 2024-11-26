@@ -14,6 +14,7 @@ public class Main {
         ArrayList<Cliente> clientes = new ArrayList<>();
         clientes.add(new Cliente("tomas", "tomas@gmail.com"));
         clientes.add(new Cliente("federico", "federicomartos@gmail.com"));
+        clientes.add(new Cliente("nico", "nico@gmail.com"));
 
         boolean ejecutar = true;
         while (ejecutar) {
@@ -140,7 +141,7 @@ public class Main {
             int index = 1;
             for (Lugar lugar : funcionSeleccionada.getLugaresDisponibles().keySet()) {
                 int disponibles = funcionSeleccionada.getLugaresDisponibles().get(lugar);
-                System.out.println(index + ": " + lugar.getClass().getSimpleName() + " (" + disponibles + " disponibles)");
+                System.out.println(index + ": " + lugar.getClass().getSimpleName() + " (" + disponibles + " disponibles)" + " - Costo Adicional $" + lugar.getCostoAdicional());
                 index++;
             }
             System.out.print("Opción: ");
@@ -165,8 +166,12 @@ public class Main {
             }
         }
 
+        System.out.println("\nDetalle de la compra:");
+        for(Entrada entrada : entradas.getEntradas()){
+            entrada.detalleEntrada();
+        }
         System.out.println("\nSeleccione el medio de pago:");
-        System.out.println("1. Efectivo\n2. Tarjeta Crédito\n3. Tarjeta Débito");
+        System.out.println("1. Efectivo\n2. Tarjeta Crédito\n3. Tarjeta Débito\n4. Cancelar Compra");
         System.out.print("Opción: ");
         int opcionPago = scanner.nextInt();
         MedioDePago medioDePago = switch (opcionPago) {
@@ -177,11 +182,19 @@ public class Main {
                 yield new TarjetaCredito(cuotas);
             }
             case 3 -> new TarjetaDebito();
+            case 4 -> {
+                System.out.println("\nCompra cancelada.\n");
+                yield null;
+            }
             default -> {
                 System.out.println("\nOpción inválida, se usará Efectivo por defecto.");
                 yield new Efectivo();
             }
         };
+
+        if(medioDePago == null) {
+            return;
+        }
 
         Venta venta = new Venta(cliente, medioDePago);
         venta.agregarEntrada(entradas);
@@ -199,8 +212,8 @@ public class Main {
             System.out.println("1. Ver todas las obras");
             System.out.println("2. Ver todas las funciones");
             System.out.println("3. Ver todos los grupos de actores");
-            System.out.println("4. Cargar una nueva obra");
-            System.out.println("5. Cargar un nuevo grupo de actores");
+            System.out.println("4. Cargar un nuevo grupo de actores");
+            System.out.println("5. Cargar una nueva obra");
             System.out.println("6. Cargar una nueva función");
             System.out.println("7. Salir");
             System.out.print("Opción: ");
@@ -220,7 +233,7 @@ public class Main {
                     ArrayList<Funcion> funciones = teatro.getFunciones();
                     System.out.println("\n=== Lista de Funciones ===\n");
                     for (Funcion funcion : funciones) {
-                        System.out.println("Obra: " + funcion.getObra().getNombre() + " - Fecha: " + funcion.getFecha() + " - Precio: $" + funcion.getPrecio());
+                        System.out.println("Obra: " + funcion.getObra().getNombre() + " - Actores: " + funcion.getObra().getGrupoDeActores().getResumenActores() + " - Fecha: " + funcion.getFecha() + " - Precio: $" + funcion.getPrecio());
                     }
                     System.out.println();
                 }
@@ -232,8 +245,9 @@ public class Main {
                     }
                     System.out.println();
                 }
-                case 4 -> cargarObra(scanner, teatro);
-                case 5 -> cargarGrupoDeActores(scanner, teatro);
+                case 4 -> cargarGrupoDeActores(scanner, teatro);
+                case 5 -> cargarObra(scanner, teatro);
+
                 case 6 -> cargarFuncion(scanner, teatro);
                 case 7 -> {
                     System.out.println("\nSaliendo del menú de administrador.\n");

@@ -5,12 +5,10 @@ public class Paraiso extends Lugar {
     public Paraiso(int cantidadDisponible) {
         super(cantidadDisponible);
     }
-
     @Override
     public double getCostoAdicional() {
         return this.costoAdicional;
     }
-
     @Override
     public String getNombre() {
         return this.nombre;
